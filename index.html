@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GFC</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const SWITCHES = [
+        {
+          name: "Good",
+          color: "green"
+        },
+        {
+          name: "Fast",
+          color: "blue"
+        },
+        {
+          name: "Cheap",
+          color: "red"
+        }
+      ];
+
+      const Switch = ({ code, value, changeValue }) => {
+        const{name, color} = SWITCHES[code];
+        return (
+          <div>
+            <label className="switch">
+              <input type="checkbox" checked={value} onChange={changeValue}/>
+              <span className={`slider ${color}`}></span>
+              <label className="name" htmlFor={name}>{name}</label>
+              </label>
+          </div>
+        );
+      };
+
+      const Switches = () => {
+        const [count, updateCount] = React.useState([]);
+
+        const reducer = (oldState, action) => {
+          const state = [...oldState];
+          if(action.value){
+            const newCount = [...count];
+            if(count.indexOf(action.index) < 0)
+              newCount.push(action.index);
+            if(newCount.length > 2){
+              state[newCount.shift()] = false;
+            }
+            updateCount(newCount);
+            state[action.index] = true;            
+          }else{
+            updateCount(count.filter((x, i) => i != action.index));
+            state[action.index] = false;
+          }
+          return state;
+        }
+
+        const [switches, dispatch] = React.useReducer(reducer, [false, false, false]);
+
+        return (
+          <main>
+            <h1>Good Fast Cheap, You only choose two!</h1>
+            <section className="switches">
+              {switches.map((sw, index) => {
+                const changeValue = event =>{
+                  const value = event.target.checked;
+                  dispatch({value, index})
+                };
+                return <Switch key={index} code={index} value={sw} changeValue={changeValue}/>;
+              })}
+            </section>
+          </main>
+        );
+      };
+
+      ReactDOM.render(<Switches />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
