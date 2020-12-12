@@ -47,7 +47,7 @@
           const state = [...oldState];
           if(action.value){
             const newCount = [...count];
-            if(count.indexOf(action.index) < 0)
+            if(newCount.indexOf(action.index) < 0)
               newCount.push(action.index);
             if(newCount.length > 2){
               state[newCount.shift()] = false;
@@ -55,7 +55,7 @@
             updateCount(newCount);
             state[action.index] = true;            
           }else{
-            updateCount(count.filter((x, i) => i != action.index));
+            updateCount(count.filter((x) => x != action.index));
             state[action.index] = false;
           }
           return state;
@@ -65,7 +65,7 @@
 
         return (
           <main>
-            <h1>Good Fast Cheap, You only choose two!</h1>
+            <h1>Good Fast Cheap, You can't choose all!</h1>
             <section className="switches">
               {switches.map((sw, index) => {
                 const changeValue = event =>{
