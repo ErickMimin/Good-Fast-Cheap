@@ -12,17 +12,26 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
+      const getParameterByName = function(name, url = window.location.href){
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+
       const SWITCHES = [
         {
-          name: "Good",
+          name: getParameterByName("it1") || "Good",
           color: "green"
         },
         {
-          name: "Fast",
+          name: getParameterByName("it2") || "Fast",
           color: "blue"
         },
         {
-          name: "Cheap",
+          name: getParameterByName("it3") || "Cheap",
           color: "red"
         }
       ];
@@ -65,7 +74,7 @@
 
         return (
           <main>
-            <h1>Good Fast Cheap, You can't choose all!</h1>
+            <h1>{`${getParameterByName("it1") || "Good"} ${getParameterByName("it2") || "Fast"} ${getParameterByName("it3") || "Cheap"}`}, You can't choose all!</h1>
             <section className="switches">
               {switches.map((sw, index) => {
                 const changeValue = event =>{
