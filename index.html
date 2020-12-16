@@ -74,7 +74,7 @@
 
         return (
           <main>
-            <h1>{`${getParameterByName("it1") || "Good"} ${getParameterByName("it2") || "Fast"} ${getParameterByName("it3") || "Cheap"}`}, You can't choose all!</h1>
+            <h1>{`${SWITCHES[0].name} ${SWITCHES[1].name} ${SWITCHES[2].name}`}, You can't choose all!</h1>
             <section className="switches">
               {switches.map((sw, index) => {
                 const changeValue = event =>{
